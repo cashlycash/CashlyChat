@@ -1,0 +1,91 @@
+<%- include('../partials/header') -%>
+
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><%- req.webdata.sitename %> /</span> Account</h4>
+
+<div class="row">
+  <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2">
+    <div class="card">
+      <h3 class="card-header">Account Information</h3>
+      <div class="card-body">
+
+        <ul id="list" class="list-group list-group-flush">
+          <li class="d-flex">
+            <div class="avatar flex-shrink-0 me-3">
+              <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-user"></i></span>
+            </div>
+            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+              <div class="me-2">
+                <small class="text-muted d-block mb-1">Username:</small>
+                <h6 class="mb-0">
+                  <input class="form-control" type="text" value="<%= req.session.user.username %>" readonly />
+                </h6>
+              </div>
+            </div>
+          </li><br />
+          <li class="d-flex">
+            <div class="avatar flex-shrink-0 me-3">
+              <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-key"></i></span>
+            </div>
+            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+              <div class="me-2">
+                <h6 class="mb-0">
+                  <small class="text-muted d-block mb-1">Change Password:</small>
+                  <button type="button" class="btn btn-primary" onclick="window.location.href = '/account/change-password'">
+                    Change Password
+                  </button>
+                </h6>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2">
+    <div class="card">
+      <h3 class="card-header">Devices</h3>
+      <div class="input-group p-4 pt-0">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">@</span>
+        </div>
+        <input type="text" id="search" class="form-control" placeholder="Search Username" aria-label="Search Username" aria-describedby="basic-addon1">
+      </div>
+
+      <ul id="list" class="list-group list-group-flush ">
+        <% devices.forEach((user, index) => { %>
+        <li class="list-group-item d-flex flex-row justify-content-between">
+          IP: <%= user.ip %><br />
+          Token used: <%= user.token %><br />
+          <div class="btn-group" role="group" aria-label="Basic example" onclick="logout('<%= index %>')">
+            <button type="button" class="btn btn-danger">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            </button>
+          </div>
+        </li>
+        <% }) %>
+      </ul>
+
+      <script>
+        var logout = (index) => {
+          window.location.href = "/account/logout/" + index;
+        }
+
+        $(document).ready(function() {
+          $("#search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#list li").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+      </script>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer'); -%>

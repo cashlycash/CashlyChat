@@ -1,0 +1,83 @@
+<%- include('../partials/header') -%>
+
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><%- req.webdata.sitename %> /</span> Friends</h4>
+
+<div class="row">
+  
+  <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+    <div class="card">
+
+      <div class="input-group">
+        <input type="text" id="search" class="form-control bg-label-primary" disabled value="
+        <%= `You have ${pending.length == 0 ? "no" : pending.length} new request${pending.length > 1 ? 's' : ''}` %>
+        ">
+        <div class="input-group-append">
+          <span class="input-group-text bg-label-primary">
+            <a class="text-decoration-none" href="/friends/find">
+              Sent Requests
+            </a>
+          </span>
+        </div>
+      </div>
+
+      <ul class="list-group list-group-flush">
+        <% pending.forEach(user => { %>
+        <li class="list-group-item">
+            <%= user %>
+            <a href="/friends/accept/<%= user %>" class="btn btn-sm btn-success float-end">Accept</a>
+            <a href="/friends/decline/<%= user %>" class="btn btn-sm btn-danger float-end">Decline</a>
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+    <div class="card">
+
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">@</span>
+        </div>
+        <input type="text" id="search" class="form-control" placeholder="Search Username" aria-label="Search Username" aria-describedby="basic-addon1">
+        <div class="input-group-append">
+          <span class="input-group-text bg-label-primary">
+            <a class="text-decoration-none text-white" href="/friends/find">
+              Find Friends
+            </a>
+          </span>
+        </div>
+      </div>
+
+      <ul id="list" class="list-group list-group-flush">
+        <% if (friends.length == 0) { %>
+        <li class="list-group-item">
+          No friends found. Add some friends to chat with them.
+        </li>
+        <% } %>
+        <% friends.forEach(user => { 
+        if (user == req.session.user.username) return; %>
+        <li class="list-group-item">
+          <a href="/chat/<%= user %>">
+            <%= user %>
+            <a href="/friends/remove/<%= user %>" class="btn btn-sm btn-danger float-end">Remove</a>
+          </a>
+        </li>
+        <% }) %>
+      </ul>
+
+      <script>
+        $(document).ready(function() {
+          $("#search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#list li").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+      </script>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer'); -%>

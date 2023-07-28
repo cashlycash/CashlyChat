@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../../assets/" data-template="vertical-menu-template">
+
+<head>
+  <link rel="stylesheet" href="/assets/css/argon.css?v=1.2.0" type="text/css" />
+  <script src="https://kit.fontawesome.com/b97ffc16ff.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/assets/css/all.min.css" type="text/css" />
+
+  <title>
+    <%= req.webdata.sitename %>
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta charset="utf-8" />
+  <meta name="description" content="<%= req.webdata.description %>" />
+  <meta name="keywords" content="<%= req.webdata.keywords %>" />
+  <!-- Canonical SEO -->
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/assets/logo.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com/" />
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome.css" />
+  <link rel="stylesheet" href="/assets/vendor/fonts/flag-icons.css" />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="/assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="/assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="/assets/vendor/libs/typeahead-js/typeahead.css" />
+  <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <!-- Page CSS -->
+  <link rel="stylesheet" href="/assets/css/custom.css" />
+
+  <!-- Helpers -->
+  <script src="/assets/vendor/js/helpers.js"></script>
+
+  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+  <script src="/assets/vendor/js/template-customizer.js"></script>
+  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+  <script src="/assets/js/config.js"></script>
+
+  <!-- SOCKET.IO -->
+  <script src="https://cdn.socket.io/4.7.1/socket.io.min.js"></script>
+  <script>
+    var socket = io({
+      autoConnect: false
+    });
+    socket.auth = {
+      id: '<%- locals.req.session.user.username %>'
+    };
+    socket.connect();
+  </script>
+</head>
+
+<body>
+
+  <div class="notification-container" id="notification-container"></div>
+  <script>
+    const notificationContainer = document.getElementById('notification-container');
+    const NOTIFICATION_TYPES = {
+      INFO: 'info',
+      SUCCESS: 'success',
+      WARNING: 'warning',
+      DANGER: 'danger'
+    };
+
+    function addNotification(type, text, autoremove = undefined) {
+      const newNotification = document.createElement('div');
+      newNotification.classList.add('notification', `notification-${type}`);
+      const innerNotification = text;
+      newNotification.innerHTML = innerNotification;
+      newNotification.addEventListener('click', () => {
+        removeNotification(newNotification);
+      });
+      notificationContainer.appendChild(newNotification);
+
+      if (autoremove) {
+        setTimeout(() => {
+          removeNotification(newNotification);
+        }, autoremove);
+      };
+
+      return newNotification;
+    }
+
+    function removeNotification(notification) {
+      notification.classList.add('hide');
+      setTimeout(() => {
+        notificationContainer.removeChild(notification);
+      }, 500);
+    }
+
+    socket.on('notification', (raw) => {
+      var data = JSON.parse(raw)
+      console.log(data);
+      addNotification(data.type, data.text, data.autoremove);
+    });
+  </script>
+
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+
+      <!-- Menu -->
+      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+        <div class="app-brand demo">
+          <a href="/" class="app-brand-link">
+            <span class="app-brand-logo demo">
+              <img width="25" viewBox="0 0 25 42" src="/assets/logo.png" />
+            </span>
+            <span class="app-brand-text menu-text fw-bolder ms-2 " style="font-size:15pt">
+              <%= req.webdata.sitename %>
+            </span>
+          </a>
+          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+          </a>
+        </div>
+        <div class="menu-inner-shadow"></div>
+        <!-- Dashboard -->
+        <ul class="menu-inner py-1">
+
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Pages</span>
+          </li>
+
+          <li class="menu-item">
+            <a href="/" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-home"></i>
+              <div data-i18n="Home">Home</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="/dashboard" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-paper-plane"></i>
+              <div data-i18n="Dashboard">Chat</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="/friends" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-group"></i>
+              <div data-i18n="Dashboard">Friends</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="/account" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-user"></i>
+              <div data-i18n="Account">Account</div>
+            </a>
+          </li>
+
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Socials</span>
+          </li>
+
+          <li class="menu-item">
+            <a href="#" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-traffic-cone"></i>
+              <div data-i18n="Dashboard">Coming Soon</div>
+            </a>
+          </li>
+
+        </ul>
+        <% } %>
+      </aside>
+
+      <div class="layout-page">
+        <!-- Navbar -->
+        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+              <i class="bx bx-menu bx-sm"></i>
+            </a>
+          </div>
+          <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+            <div class="navbar-nav align-items-center">
+              <button type="button" class="btn bg-label-dark">
+                <span style="text-transform: none;">Welcome, <%= locals.user.username %></span>
+              </button>
+            </div>
+            <ul class="navbar-nav flex-row align-items-center ms-auto">
+              <!-- Quick links  -->
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                  <i class="bx bx-bell bx-sm"></i>
+                  <span class="badge badge-notifications bg-label-primary" id="notfibadge">
+                    <%= locals.req.notifications.length %>
+                  </span>
+                </a>
+                <div class="dropdown-menu" id="notifs">
+                  <% if (locals.req.notifications.length == 0) { %>
+                    <a class="dropdown-item d-flex align-items-center" href="javascript:void(0)">
+                      <div class="flex-grow-1">
+                        <p class="mb-0">No notifications</p>
+                      </div>
+                    </a>
+                  <% } else { %>
+                    <% for (var i = 0; i < locals.req.notifications.length; i++) { %>
+                      <a class="dropdown-item d-flex align-items-center" href="javascript:void(0)">
+                        <div class="flex-grow-1">
+                          <p class="mb-0"><%= locals.req.notifications[i].message %></p>
+                        </div>
+                      </a>
+                    <% } %>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item d-flex align-items-center" href="javascript:clearnotif()">
+                      <div class="flex-grow-1">
+                        <p class="mb-0">Clear all</p>
+                      </div>
+                    </a>
+                    <script>
+                      var clearnotif = (async function() {
+                        socket.emit("clearNotifications", "+1")
+                        document.getElementById("notifs").innerHTML = `<a class="dropdown-item d-flex align-items-center" href="javascript:void(0)">
+                        <div class="flex-grow-1">
+                          <p class="mb-0">No notifications</p>
+                        </div>
+                      </a>`
+                      document.getElementById("notfibadge").innerHTML = "0"
+                      })
+                    </script>
+                  <% } %>
+                </div>
+              </li>
+              <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown me-2 me-xl-0">
+                <a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                  <i class="bx bx-grid-alt bx-sm"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end py-0">
+                  <div class="dropdown-menu-header border-bottom">
+                    <div class="dropdown-header d-flex align-items-center py-3">
+                      <h5 class="text-body mb-0 me-auto">Shortcuts</h5>
+                    </div>
+                  </div>
+                  <div class="dropdown-shortcuts-list scrollable-container">
+                    <div class="row row-bordered overflow-visible g-0 row-cols-2">
+                      <div class="dropdown-shortcuts-item col">
+                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                          <i class="bx bx-home fs-4"></i>
+                        </span>
+                        <a href="/" class="stretched-link">Home</a>
+                      </div>
+                      <div class="dropdown-shortcuts-item col">
+                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                          <i class="bx bx-user fs-4"></i>
+                        </span>
+                        <a href="/account" class="stretched-link">Account</a>
+                      </div>
+                      <div class="dropdown-shortcuts-item col">
+                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                          <i class="bx bx-group fs-4"></i>
+                        </span>
+                        <a href="/friends" class="stretched-link">Friends</a>
+                      </div>
+                      <div class="dropdown-shortcuts-item col">
+                        <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                          <i class="bx bx-paper-plane fs-4"></i>
+                        </span>
+                        <a href="/chat" class="stretched-link">Chat</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <!-- /Quick links -->
+              <!-- User -->
+              <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                  <div class="avatar avatar-online">
+                    <img alt="Avatar" src="/assets/img/illustrations/pb.png" />
+                  </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0 me-1">
+                          <div class="avatar avatar-online">
+                            <img src="/assets/img/illustrations/pb.png" />
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <span class="fw-semibold d-block">
+                            <%= locals.user.username %>
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="dropdown-divider"></div>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/account">
+                      <i class="bx bx-user me-2"></i>
+                      <span class="align-middle">My Account</span>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="dropdown-divider"></div>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/auth/logout">
+                      <i class="bx bx-power-off me-2"></i>
+                      <span class="align-middle">Log Out</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <!-- Content -->
+          <div class="container-xxl flex-grow-1 container-p-y">
+            <% if (locals.req.session.success) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <h4 class="alert-text" style="margin: 0">
+                <%- locals.req.session.success -%>
+              </h4>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <% } %>
+            <% if (locals.req.session.error) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <h4 class="alert-text" style="margin: 0">
+                <%- locals.req.session.error -%>
+              </h4>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <% } %>
+            <% if (locals.req.session.alert) { %>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <h4 class="alert-text" style="margin: 0">
+                <%- locals.req.session.alert -%>
+              </h4>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
