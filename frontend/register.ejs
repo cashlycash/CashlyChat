@@ -41,6 +41,7 @@
   <script src="/assets/vendor/js/helpers.js"></script>
 
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <link rel="stylesheet" href="../../assets/custom.css" />
   <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
   <script src="/assets/vendor/js/template-customizer.js"></script>
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
@@ -49,6 +50,53 @@
 
 <body>
   <!-- Content -->
+  <div class="notification-container" id="notification-container"></div>
+  <script>
+    const notificationContainer = document.getElementById('notification-container');
+    const NOTIFICATION_TYPES = {
+      INFO: 'info',
+      SUCCESS: 'success',
+      WARNING: 'warning',
+      DANGER: 'danger'
+    };
+
+    function addNotification(type, text, autoremove = undefined) {
+      const newNotification = document.createElement('div');
+      newNotification.classList.add('notification', `notification-${type}`);
+      const innerNotification = text;
+      newNotification.innerHTML = innerNotification;
+      newNotification.addEventListener('click', () => {
+        removeNotification(newNotification);
+      });
+      notificationContainer.appendChild(newNotification);
+
+      if (autoremove) {
+        setTimeout(() => {
+          removeNotification(newNotification);
+        }, autoremove);
+      };
+
+      return newNotification;
+    }
+
+    function removeNotification(notification) {
+      notification.classList.add('hide');
+      setTimeout(() => {
+        notificationContainer.removeChild(notification);
+      }, 500);
+    }
+  </script>
+  
+  <% if (req.session.error) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <h4 class="alert-text" style="margin: 0">
+        <%- req.session.error -%>
+      </h4>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <% } %>
 
   <div class="authentication-wrapper authentication-cover">
     <div class="authentication-inner row m-0">

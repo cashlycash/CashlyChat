@@ -7,7 +7,10 @@ module.exports = (app, io, db) => {
       ).find((d) => d.token === req.session.token);
       await db.pull(`devices.${req.session.user.username}`, tokendevice);
     }
-    req.session.destroy();
+    
+    req.session.token = null;
+    req.session.user = null;
+
     res.redirect("/auth/login");
   });
 

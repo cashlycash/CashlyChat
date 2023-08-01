@@ -46,11 +46,10 @@
   font-size: 12px;
   line-height: 20px;
   letter-spacing: 0.5px;
-  text-transform: uppercase;
 }
 
 .notification-info {
-  background-color: #C9EEFF;
+  background-color: #c9eeff;
   color: black;
 }
 
@@ -64,4 +63,8 @@
 
 .notification-danger {
   background-color: #f55145;
+}
+
+html {
+  min-height: 100vh;
 }

@@ -13,6 +13,8 @@ const io = new Server(http);
 const glob = require("glob");
 const path = require("path");
 
+const cookieParser = require("cookie-parser");
+
 const sqlite = require("better-sqlite3");
 const session = require("express-session");
 const session_store = require("better-sqlite3-session-store");
@@ -35,6 +37,10 @@ app.set("views", path.join(__dirname, "frontend"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// cookies 
+
+app.use(cookieParser());
 
 // session
 

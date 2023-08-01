@@ -9,11 +9,24 @@
       <form method="POST">
         <div class="form-group">
           <label for="name">Group Name:</label>
-          <input type="text" class="form-control" name="name" id="name" placeholder="Enter Old Password">
+          <input type="text" class="form-control" name="name" id="name" placeholder="Enter group name">
+        </div>
+        <div class="form-group">
+          <label for="name">Visibility:</label>
+          <select class="form-select" name="vis" id="vis">
+            <option value="inv">Friends Only</option>
+            <option value="link">Public Link</option>
+            <option value="glo">Globally Searchable</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="users">Members: </label>
-          <select class="form-multi-select" id="users" name="users" multiple data-coreui-search="true">
+
+          <script type="text/javascript">
+            $('#example-multiple-selected').multiselect();
+          </script>
+
+          <select class="multiselect" id="example-multiple-selected" name="users" multiple="multiple">
             <% users.forEach(user => { %>
               <option value="<%= user %>"><%= user %></option>
             <% }); %>
