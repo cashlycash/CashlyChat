@@ -49,8 +49,9 @@
 </head>
 
 <body>
-  <!-- Content -->
-  <div class="notification-container" id="notification-container"></div>
+  
+  <div class="notification-container" id="notification-container"> 
+  </div>
   <script>
     const notificationContainer = document.getElementById('notification-container');
     const NOTIFICATION_TYPES = {
@@ -88,15 +89,12 @@
   </script>
   
   <% if (req.session.error) { %>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <h4 class="alert-text" style="margin: 0">
-        <%- req.session.error -%>
-      </h4>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+    <script>
+      addNotification(NOTIFICATION_TYPES.DANGER, '<%= req.session.error %>', 5000);
+    </script>
   <% } %>
+  
+  <!-- Content -->
 
   <div class="authentication-wrapper authentication-cover">
     <div class="authentication-inner row m-0">

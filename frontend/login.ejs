@@ -49,6 +49,51 @@
 </head>
 
 <body>
+  
+  <div class="notification-container" id="notification-container"> 
+  </div>
+  <script>
+    const notificationContainer = document.getElementById('notification-container');
+    const NOTIFICATION_TYPES = {
+      INFO: 'info',
+      SUCCESS: 'success',
+      WARNING: 'warning',
+      DANGER: 'danger'
+    };
+
+    function addNotification(type, text, autoremove = undefined) {
+      const newNotification = document.createElement('div');
+      newNotification.classList.add('notification', `notification-${type}`);
+      const innerNotification = text;
+      newNotification.innerHTML = innerNotification;
+      newNotification.addEventListener('click', () => {
+        removeNotification(newNotification);
+      });
+      notificationContainer.appendChild(newNotification);
+
+      if (autoremove) {
+        setTimeout(() => {
+          removeNotification(newNotification);
+        }, autoremove);
+      };
+
+      return newNotification;
+    }
+
+    function removeNotification(notification) {
+      notification.classList.add('hide');
+      setTimeout(() => {
+        notificationContainer.removeChild(notification);
+      }, 500);
+    }
+  </script>
+  
+  <% if (req.session.error) { %>
+    <script>
+      addNotification(NOTIFICATION_TYPES.DANGER, '<%= req.session.error %>', 5000);
+    </script>
+  <% } %>
+
   <!-- Content -->
 
   <div class="authentication-wrapper authentication-cover">
@@ -70,51 +115,6 @@
 
           <!-- /Logo -->
           <center>
-
-
-            <div class="notification-container" id="notification-container"> 
-            </div>
-            <script>
-              const notificationContainer = document.getElementById('notification-container');
-              const NOTIFICATION_TYPES = {
-                INFO: 'info',
-                SUCCESS: 'success',
-                WARNING: 'warning',
-                DANGER: 'danger'
-              };
-
-              function addNotification(type, text, autoremove = undefined) {
-                const newNotification = document.createElement('div');
-                newNotification.classList.add('notification', `notification-${type}`);
-                const innerNotification = text;
-                newNotification.innerHTML = innerNotification;
-                newNotification.addEventListener('click', () => {
-                  removeNotification(newNotification);
-                });
-                notificationContainer.appendChild(newNotification);
-
-                if (autoremove) {
-                  setTimeout(() => {
-                    removeNotification(newNotification);
-                  }, autoremove);
-                };
-
-                return newNotification;
-              }
-
-              function removeNotification(notification) {
-                notification.classList.add('hide');
-                setTimeout(() => {
-                  notificationContainer.removeChild(notification);
-                }, 500);
-              }
-            </script>
-            
-            <% if (req.session.error) { %>
-              <script>
-                addNotification(NOTIFICATION_TYPES.DANGER, '<%= req.session.error %>', 5000);
-              </script>
-            <% } %>
 
             <h4 class="app-brand-text menu-text fw-bolder mb-1">
               Welcome to <%= req.webdata.sitename %>!👋
