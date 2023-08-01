@@ -3,181 +3,29 @@
 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><%- req.webdata.sitename %> /</span> Home</h4>
 
 <div class="row">
-  <div class="col-lg-12 mb-4 order-0">
+  <div class="col-12 order-0">
     <div class="card">
-      <div class="d-flex align-items-end row">
-        <div class="col-sm-7">
-          <div class="card-body">
-            <h5 class="card-title text-primary">
-              Logged in as <%= req.session.user.username %>
-            </h5>
-            <p class="mb-4">
-              Congratulations, You have successfully logged in to your profile
-              🎉.
-            </p>
-          </div>
-        </div>
-        <div class="col-sm-5 text-center text-sm-left">
-          <div class="card-body pb-0 px-0 px-md-4">
-            <img src="../assets/img/illustrations/man-with-laptop-light.png" height="140" alt="View Badge User" data-app-dark-img="illustrations/man-with-laptop-dark.png" data-app-light-img="illustrations/man-with-laptop-light.png" />
-          </div>
+      <div class="col">
+        <div class="card-body">
+          <h5 class="card-title text-primary mb-2">
+            <a href="#" class="text-decoration-none text-primary">@CashlyCash</a>
+          </h5>
+          <p class="mb-0">
+            I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry
+          </p>
         </div>
       </div>
+      <div class="card-body p-4 m-0 border-top">
+        <img src="../assets/img/avatars/10.png" class="m-2 h-25" alt="product" />
+      </div>
+      <div class="card-body p-4 m-0 border-top">
+        <a href="#" class="text-decoration-none text-danger border border-danger p-2" style="border-radius: 5%;">
+          <i class="bx bx-heart me-1"></i> 1.5k
+        </a>
+        <span class="float-end text-muted">2h ago</span>
     </div>
   </div>
-
-  <div class="row">
-    <!-- Order Statistics -->
-    <div class="col-md-6 col-lg-6 order-0 mb-4">
-      <div class="card h-100">
-        <div class="card-header d-flex align-items-center justify-content-between pb-3">
-          <div class="card-title mb-0">
-            <h3 class="m-0 me-2">
-              Version
-              <small class="text-muted">v<%= req.webdata.version %></small>
-            </h3>
-          </div>
-        </div>
-        <div class="card-body">
-          <% if (req.webdata.changelog.enabled) { %>
-          <h5 class="card-title m-0 me-2">Changelog</h5>
-          <br />
-          <ul class="p-0 m-0">
-            <% req.webdata.changelog.data.forEach(change => { %>
-            <li class="d-flex mb-4 pb-1">
-              <div class="avatar flex-shrink-0 me-3">
-                <span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-bell"></i></span>
-              </div>
-              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                <div class="me-2">
-                  <h6 class="mb-0"><%= change.header %></h6>
-                  <small class="text-muted">
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item ">
-                        <span class="pl-2 border-left">
-                          <%- change.text.join("</span></li><li class=\"list-group-item\"><span class=\"pl-2 ml-2 border-left\">") %>
-                        </span>
-                      </li>
-                    </ul>
-                  </small>
-                  <small class="fw-semibold">
-                    <%= change.sent %>
-                  </small>
-                </div>
-              </div>
-            </li>
-            <% }) %>
-          </ul>
-          <% } %>
-
-          <% if (req.webdata.todo.enabled) { %>
-          <h5 class="card-title m-0 me-2">ToDo list</h5>
-          <br />
-          <div class="d-flex">
-            <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-list-check"></i></span>
-            </div>
-            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-                <% req.webdata.todo.data.forEach(todo => { %>
-                <div class="form-check form-switch mb-2">
-                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckCheckedDisabled" <%= todo.completed ? "checked": "" %> disabled />
-                  <label class="form-check-label" for="flexSwitchCheckCheckedDisabled">
-                    <%= todo.text %>
-                  </label>
-                </div>
-                <% }) %>
-              </div>
-            </div>
-          </div>
-          <% } %>
-        </div>
-      </div>
-    </div>
-    <!--/ Order Statistics -->
-    <!-- Expense Overview -->
-    <!--     <div class="col-md-6 col-lg-4 order-2 mb-4">
-      <div class="card h-100">
-        <div class="card-header d-flex align-items-center justify-content-between">
-          <h5 class="card-title m-0 me-2">Useful links</h5>
-        </div>
-        <div class="card-body">
-          <ul class="p-0 m-0">
-            <li class="d-flex">
-              <div class="avatar flex-shrink-0 me-3">
-                <span class="avatar-initial rounded bg-label-primary"><i class="bx bxl-discord"></i></span>
-              </div>
-              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                <div class="me-2">
-                  <small class="text-muted d-block mb-1">Discord Server:</small>
-                  <h6 class="mb-0">
-                    <input class="form-control" type="text" id="exampleFormControlReadOnlyInput1" value="" readonly />
-                  </h6>
-                </div>
-              </div>
-            </li>
-            <br />
-            <li class="d-flex">
-              <div class="avatar flex-shrink-0 me-3">
-                <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-server"></i></span>
-              </div>
-              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                <div class="me-2">
-                  <small class="text-muted d-block mb-1">Dashboard URL:</small>
-                  <h6 class="mb-0">
-                    <input class="form-control" type="text" id="exampleFormControlReadOnlyInput1" value="" readonly />
-                  </h6>
-                </div>
-              </div>
-            </li>
-            <br />
-            <br />
-          </ul>
-        </div>
-      </div>
-    </div> -->
-    <!--/ Expense Overview -->
-    <!-- Transactions -->
-    <div class="col-md-6 col-lg-6 order-2 mb-4">
-      <div class="card h-100">
-        <div class="card-header d-flex align-items-center justify-content-between">
-          <h3 class="card-title m-0 me-2">Information</h3>
-        </div>
-        <div class="card-body">
-          <ul class="p-0 m-0">
-            <li class="d-flex">
-              <div class="avatar flex-shrink-0 me-3">
-                <span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-rename"></i></span>
-              </div>
-              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                <div class="me-2">
-                  <small class="text-muted d-block mb-1">Your username:</small>
-                  <h6 class="mb-0">
-                    <input class="form-control" type="text" id="exampleFormControlReadOnlyInput1" value="<%= req.session.user.username %>" readonly />
-                  </h6>
-                </div>
-              </div>
-            </li>
-            <br />
-            <li class="d-flex">
-              <div class="avatar flex-shrink-0 me-3">
-                <span class="avatar-initial rounded bg-label-primary"><i class="bx bxs-devices"></i></span>
-              </div>
-              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                <div class="me-2">
-                  <small class="text-muted d-block mb-1">Your IP:</small>
-                  <h6 class="mb-0">
-                    <input class="form-control" type="text" id="exampleFormControlReadOnlyInput1" value="<%= req.headers["x-forwarded-for"] || req.connection.remoteAddress %>" readonly />
-                  </h6>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!--/ Transactions -->
-  </div>
+</div>
 
 
-  <%- include('./partials/footer'); -%>
+<%- include('./partials/footer'); -%>
