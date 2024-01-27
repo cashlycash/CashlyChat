@@ -70,7 +70,7 @@ app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 var backend_files = glob.sync("./backend/*.js");
 for (const file of backend_files) {
-  require(`.\\${file}`)(app, io, db);
+  require(`./${file}`)(app, io, db);
 }
 
 // preparing for first run
