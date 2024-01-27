@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 var data = {
+  mongoLink: process.env.MONGO_LINK,
   backend: {
     smtp: {
       host: "smtp.zoho.in",

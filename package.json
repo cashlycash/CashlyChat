@@ -13,6 +13,7 @@
   "dependencies": {
     "better-sqlite3": "^8.4.0",
     "better-sqlite3-session-store": "^0.1.0",
+    "connect-mongodb-session": "^5.0.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.1",
     "ejs": "^3.1.9",
@@ -23,6 +24,7 @@
     "http": "^0.0.1-security",
     "nodemailer": "^6.9.4",
     "quick.db": "^9.1.6",
+    "quickmongo": "^5.2.0",
     "socket.io": "^4.7.1",
     "sqlite3": "^5.1.6"
   },

@@ -4,7 +4,8 @@ require("ejs");
 
 const app = express();
 
-const { QuickDB } = require("quick.db");
+const { Database } = require("quickmongo");
+var mongoLink = require("./webdata.js").mongoLink;
 
 const http = require("http").createServer(app);
 const { Server } = require("socket.io");
@@ -15,13 +16,13 @@ const path = require("path");
 
 const cookieParser = require("cookie-parser");
 
-const sqlite = require("better-sqlite3");
 const session = require("express-session");
-const session_store = require("better-sqlite3-session-store");
+var MongoDBStore = require('connect-mongodb-session')(session);
 
 const port = process.env.PORT || 3000;
-const db = new QuickDB({
-  filePath: `./database.db`,
+const db = new Database(mongoLink);
+db.on("ready", () => {
+  console.log("Connected to the database");
 });
 
 // setting up the ip middleware
@@ -44,15 +45,10 @@ app.use(cookieParser());
 
 // session
 
-const session_db = new sqlite("sessions.db");
-const SqliteStore = session_store(session);
 var sessionMiddleware = session({
-  store: new SqliteStore({
-    client: session_db,
-    expired: {
-      clear: true,
-      intervalMs: 900000,
-    },
+  store: new MongoDBStore({
+    uri: mongoLink,
+    collection: 'mySessions'
   }),
   secret: "hottiecutiepootieredvelvetkake",
   resave: false,
@@ -76,6 +72,8 @@ for (const file of backend_files) {
 // preparing for first run
 
 (async () => {
+  await db.connect();
+
   if (!(await db.get("users"))) {
     await db.set("users", []);
   }
