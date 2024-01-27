@@ -105,7 +105,6 @@ module.exports = (app, io, db) => {
     }
 
     db.set(`verify.${Math.random().toString(36).substring(7)}`, {
-      id: userid,
       username: req.body.username,
       password: req.body.password,
       email: req.body.email,
