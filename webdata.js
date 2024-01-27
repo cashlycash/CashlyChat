@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var data = {
   backend: {
     smtp: {
