@@ -1,6 +1,18 @@
 var data = {
+  backend: {
+    smtp: {
+      host: "smtp.zoho.in",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "hello@euph.live",
+        pass: process.env.SMTP_PASS
+      }
+    }
+  },
   "sitename": "CashlyChat",
   "version": "1.0.0",
+  "account": "CashlyChat",
   "keywords": "live chat, chating, social media, friends",
   "description": "CashlyChat is a chat application that allows you to chat with your friends and family.",
   "author": {
@@ -48,7 +60,7 @@ var data = {
       }
     ]
   },
-  "logo": "delete the current logo.png and put your logo in the public folder and rename it to logo.png"
+  "logo": "delete the current logo.png and put your logo in the assets folder and rename it to logo.png"
 }
 
 module.exports = data;

@@ -1,4 +1,15 @@
+const nodemailer = require('nodemailer');
+
 module.exports = (app, io, db) => {
+
+  const transporter = nodemailer.createTransport(require("../../webdata").backend.smtp);
+  transporter.verify().then(() => {
+    console.log("SMTP Ready");
+  }).catch((err) => {
+    console.log(`SMTP Error : ${err}`)
+    process.exit(0)
+  })
+
   app.get("/auth/logout", async (req, res) => {
     if (req.session && req.session.token && req.session.user) {
       await db.delete(`tokenvalue.${req.session.token}`);
@@ -93,15 +104,30 @@ module.exports = (app, io, db) => {
       return;
     }
 
-    var userid = ((await db.get(`userid`)) || 0).toString();
-
-    await db.set(`user.${req.body.username}`, {
+    db.set(`verify.${Math.random().toString(36).substring(7)}`, {
       id: userid,
       username: req.body.username,
       password: req.body.password,
+      email: req.body.email,
     });
 
-    await db.add(`userid`, 1);
+    res.send(`Please check your email for a verification link.`);
+  });
+
+  app.get("/auth/verify/:token", async (req, res) => {
+    var userinfo = await db.get(`verify.${req.params.token}`);
+    if (!userinfo) {
+      res.send("Invalid token");
+      return;
+    }
+
+    var userid = (((await db.get(`users`)).length() || 0) + 1).toString();
+
+    userinfo.joined = Date.now();
+    userinfo.id = userid;
+
+    db.set(`user.${userinfo.username}`, userinfo);
+    db.delete(`verify.${req.params.token}`);
 
     req.session.token = Math.random().toString(36).substring(7);
 
@@ -109,10 +135,10 @@ module.exports = (app, io, db) => {
       username: req.body.username,
       password: req.body.password,
     });
+
     await db.push(`users`, req.body.username);
     await db.set(`devices.${req.body.username}`, [
       {
-        id: userid,
         useragent: req.headers["user-agent"],
         token: req.session.token,
         ipinfo: req.ipInfo,
@@ -120,6 +146,7 @@ module.exports = (app, io, db) => {
       },
     ]);
 
-    res.redirect("/");
+    res.send("Account verified");
   });
+
 };

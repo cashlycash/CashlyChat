@@ -1,0 +1,46 @@
+<%- include('../partials/header') -%>
+
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><%- req.webdata.sitename %> / @<%- profile.username %></h4>
+
+<div class="row">
+  <div class="col-12 col-lg-3 order-1 order-lg-0">
+    <div class="card p-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center">
+          <img src="<%- profile.avatar %>" class="rounded-circle" width="50" height="50" alt="avatar" />
+          <div class="ms-3">
+            <h5 class="mb-0"><%- profile.username %></h5>
+            <p class="mb-0 text-muted">Joined: <%- profile.joined - Date.now() %></p>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bx bx-dots-horizontal-rounded"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="/@/<%- profile.username %>/edit">Edit Profile</a></li>
+            <li><a class="dropdown-item" href="/@/<%- profile.username %>/change-password">Change Password</a></li>
+            <li><a class="dropdown-item" href="/@/<%- profile.username %>/delete">Delete Account</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center">
+          <i class="bx bx-user me-2 text-primary"></i>
+          <div>
+            <h6 class="mb-0">Followers</h6>
+            <p class="mb-0 text-muted"><%- profile.followers %></p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <i class="bx bx-user me-2 text-primary"></i>
+          <div>
+            <h6 class="mb-0">Following</h6>
+            <p class="mb-0 text-muted"><%- profile.following %></p>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items
+
+
+<%- include('../partials/footer'); -%>

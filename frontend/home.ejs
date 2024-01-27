@@ -1,31 +1,81 @@
 <%- include('./partials/header') -%>
 
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"><%- req.webdata.sitename %> /</span> Home</h4>
+<div class="d-flex align-content-center justify-center text-center">
 
-<div class="row">
+  <h4 class="fw-bold p-3 mb-4 position-fixed zindex-5 shadow " style="width: calc(100% - 20.25rem); background-color: var(--bs-body-bg); border-radius: 5px;"><span class="text-muted fw-light">
+      <span class="float-start pr-5">
+        <a href="/create" class="text-decoration-none text-primary border border-primary p-2 text-sm" style="border-radius: 5%;"><i class="bx bx-plus"></i> CREATE</a>
+      </span>
+      <%- req.webdata.sitename %> /</span> Home
+    <span class="float-end pl-5">
+      <a href="javascript:reload()" class="text-decoration-none text-primary border border-primary p-2 text-sm" style="border-radius: 5%;"><i class="bx bx-loader"></i> RELOAD</a>
+    </span>
+  </h4>
+
+  <script>
+    function reload() {
+      fetch('/reload')
+        .then(res => res.json())
+        .then(data => {
+          if (data.status == 'success') {
+            let final = ''
+            data.forEach((post) => {
+              final += `<div class="col-12 order-0">
+    <div class="card">
+      <div class="col">
+        <div class="card-body">
+          <h5 class="card-title text-primary mb-2">
+            <a href="/@/${post.author}" class="text-decoration-none text-primary">${post.author}</a>
+          </h5>
+          <p class="mb-0">
+            ${post.content}
+          </p>
+        </div>
+      </div>
+      ${post.img ? `<div class="card-body p-4 m-0 border-top">
+        <img src="${post.img}" class="m-2 h-25" alt="product" />
+      </div>` : ''}
+      <div class="card-body p-4 m-0 border-top">
+        <a href="javascript:like(${post.id})" class="text-decoration-none text-danger border border-danger p-2" style="border-radius: 5%;">
+          <i class="bx bx-heart me-1"></i> <span id="likes-${post.id}">${post.likes}</span>
+        </a>
+        <span class="float-end text-muted">2h ago</span>
+    </div>
+  </div>`
+            })
+            document.getElementById('posts').innerHTML = final
+          }
+        })
+    }
+    reload()
+  </script>
+
+</div>
+
+<div id="posts" class="row mt-4 pt-5">
   <div class="col-12 order-0">
     <div class="card">
       <div class="col">
         <div class="card-body">
           <h5 class="card-title text-primary mb-2">
-            <a href="#" class="text-decoration-none text-primary">@CashlyCash</a>
+            <a href="/@/<%= req.webdata.account %>" class="text-decoration-none text-primary">@<%= req.webdata.account %></a>
           </h5>
           <p class="mb-0">
-            I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry I love it when you cry
+            Loading the best posts just for you...
           </p>
         </div>
       </div>
       <div class="card-body p-4 m-0 border-top">
-        <img src="../assets/img/avatars/10.png" class="m-2 h-25" alt="product" />
+        <img src="../assets/img/elements/17.jpg" class="m-2 w-25" alt="product" />
       </div>
       <div class="card-body p-4 m-0 border-top">
-        <a href="#" class="text-decoration-none text-danger border border-danger p-2" style="border-radius: 5%;">
-          <i class="bx bx-heart me-1"></i> 1.5k
+        <a href="javascript:void(0)" class="text-decoration-none text-danger border border-danger p-2" style="border-radius: 5%;">
+          <i class="bx bx-heart me-1"></i> Loading...
         </a>
-        <span class="float-end text-muted">2h ago</span>
+        <span class="float-end text-muted">...</span>
+      </div>
     </div>
   </div>
-</div>
 
 
-<%- include('./partials/footer'); -%>
+  <%- include('./partials/footer'); -%>

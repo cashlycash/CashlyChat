@@ -54,7 +54,7 @@ var sessionMiddleware = session({
       intervalMs: 900000,
     },
   }),
-  secret: "eliagyjaygp923",
+  secret: "hottiecutiepootieredvelvetkake",
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false },
@@ -86,6 +86,16 @@ for (const file of backend_files) {
     await db.set("totalgroups", {});
   }
 })();
+
+// global messages handling
+
+process.on("uncaughtException", (err) => {
+  console.log(err);
+});
+
+process.on("beforeExit", () => {
+  console.log(`Exiting Code`)
+})
 
 // starting the server
 

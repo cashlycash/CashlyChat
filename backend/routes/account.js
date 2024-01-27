@@ -1,4 +1,18 @@
 module.exports = (app, io, db) => {
+
+  app.get("/@/:username", async (req, res) => {
+    var user = await db.get(`user.${req.params.username}`);
+    if (!user) {
+      res.redirect("/?error=Invalid user");
+      return;
+    }
+    res.render("account/user", {
+      req: req,
+      user: req.session.user,
+      profile: user,
+    });
+  });
+
   app.get("/account", async (req, res) => {
     res.render("account/account", {
       devices: (await db.get(`devices.${req.session.user.username}`)) || [],
@@ -56,4 +70,7 @@ module.exports = (app, io, db) => {
     await db.pull(`devices.${req.session.user.username}`, device);
     res.redirect("/account");
   });
+
+  app.get("/accon")
+
 };

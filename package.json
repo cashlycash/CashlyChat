@@ -20,6 +20,7 @@
     "express-session": "^1.17.3",
     "glob": "^10.3.1",
     "http": "^0.0.1-security",
+    "nodemailer": "^6.9.4",
     "quick.db": "^9.1.6",
     "socket.io": "^4.7.1",
     "sqlite3": "^5.1.6"
